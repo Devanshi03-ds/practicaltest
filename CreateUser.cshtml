@@ -1,0 +1,242 @@
+﻿@model WebApplication1.ViewModel.VMUser
+
+@{
+    ViewData["Title"] = "CreateUser";
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.firstname))
+{
+    <h5 class="text-danger p-2">
+        @ViewBag.firstname already exists!
+    </h5>
+}
+
+<h1>CreateUser</h1>
+<form method="post" asp-action="CreateUser">
+    <div class="container-fluid">
+        <div class="card card-default">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="Name">Name<sup class="" style="font-size: 7px;"><i class="fas fa-asterisk text-danger"></i></sup></label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input class="text-line col-sm-12" asp-for="Name" autocomplete="off">
+                            </div>
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <input type="hidden" asp-for="UserId" />
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="Phone">Phone<sup class="" style="font-size: 7px;"></sup></label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input class="text-line col-sm-12" type="text" asp-for="Phone" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="Email">Email<sup class="" style="font-size: 7px;"><i class="fas fa-asterisk text-danger"></i></sup></label>
+                            </div>
+                            <div class="form-group col-md-2 autocomplete">
+                                <input type="text" asp-for="Email" class="text-line col-sm-12" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="Address">Address<sup class="" style="font-size: 7px;"><i class="fas fa-asterisk text-danger"></i></sup></label>
+                            </div>
+                            <div class="form-group col-md-2 autocomplete">
+                                <!-- <input  class="text-line col-sm-12" id="myInput" type="text" name="myCountry"> -->
+                                <input type="text" asp-for="Address" class="text-line col-sm-12" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="StateId">State</label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <select class="form-control-sm text-line col-md-12" name="StateId" asp-for="StateId" id="ddlStates">
+                                    @if (Model.StateId == 0 || Model.StateId == null)
+                                    {
+                                        <option value="@null" selected>--Select State--</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@null">--Select State--</option>
+                                    }
+                                    @foreach (var item in Model.DDLState)
+                                    {
+                                        if (Model.StateId == 0 || Model.StateId == null)
+                                        {
+                                            <option value="@item.StateId">@item.StateName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.StateId" selected="@(item.StateId == Model.StateId ? "selected" : null)">@item.StateName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="CityId">City</label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <select class="form-control-sm text-line col-md-12" asp-for="CityId" id="city">
+                                    @if (Model.CityId == 0 || Model.CityId == null)
+                                    {
+                                        <option value="@null" selected>--Select City--</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@null">--Select City--</option>
+                                    }
+                                    @foreach (var item in Model.DDLCity)
+                                    {
+                                        if (Model.CityId == 0 || Model.CityId == null)
+                                        {
+                                            <option value="@item.CityId">@item.CityName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.CityId" selected="@(item.CityId == Model.CityId ? "selected" : null)">@item.CityName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <input type="checkbox" />
+                        <label>I Agree</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group container-fluid">
+        <div class="col-md-6">
+            <div class="row">
+                <button class="btn btn-primary btn-sm col-md-3" disabled id="DelButton">
+                    Save
+                </button>
+                &nbsp;&nbsp;
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary btn-sm col-md-3">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </div>
+
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $('input[type="checkbox"]').change(function () {
+            if ($('input[type="checkbox"]:checked').length > 0) {
+                $('#DelButton').prop('disabled', false);
+            } else {
+                $('#DelButton').prop('disabled', true);
+            }
+        });
+    </script>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#state').on('change', function () {
+                var cityDropdown = $('#city');
+                //disable city drop down
+                cityDropdown.prop('disabled', 'disabled');
+                //clear drop down of old city
+                cityDropdown.empty();
+
+                //retrieve selected state
+                var state = $(this).val();
+                if (state.length > 0) {
+                    // retrieve data using a Url.Action() to construct url
+                    $.getJSON('@Url.Action("GetCities")', {
+                        state: state
+                    })
+                        .done(function (data) {
+                            //re-enable city drop down
+                            cityDropdown.removeProp('disabled');
+                            //for each returned state
+                            $.each(data, function (i, city) {
+                                //Create new option
+                                var option = $('<option />').html(city);
+                                //append city states drop down
+                                cityDropdown.append(option);
+                            });
+                        })
+                        .fail(function (jqxhr, textStatus, error) {
+                            var err = textStatus + ", " + error;
+                            console.log("Request Failed: " + err);
+                        });
+                }
+            });
+        })
+    </script>
+}
+
+@*  <script type="text/javascript">
+        $(function () {
+            $("select").each(function () {
+                if ($(this).find("option").length <= 1) {
+                    $(this).attr("disabled", "disabled");
+                }
+            });
+
+            $("StateId").change(function () {
+                var value = 0;
+                if ($(this).val() != "") {
+                    value = $(this).val();
+                }
+                var id = $(this).attr("id");
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/AjaxMethod",
+                    data: { value: value, type: id },
+                    success: function (response) {
+                        switch (id) {
+                            case "ddlStates":
+                                DisableDropDown("#ddlCities");
+                                PopulateDropDown("#ddlCities", response.Cities);
+                                break;
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+
+            if ($("#ddlStates").val() != "" && $("#ddlCities").val() != "") {
+                var message += "\nState: " + $("#ddlStates option:selected").text();
+                message += "\nCity: " + $("#ddlCities option:selected").text();
+                alert(message);
+            }
+        });
+
+        function DisableDropDown(dropDownId) {
+            $(dropDownId).attr("disabled", "disabled");
+            $(dropDownId).empty().append('<option selected="selected" value="0">Please select</option>');
+        }
+
+        function PopulateDropDown(dropDownId, list) {
+            if (list != null && list.length > 0) {
+                $(dropDownId).removeAttr("disabled");
+                $.each(list, function () {
+                    $(dropDownId).append($("<option></option>").val(this['Value']).html(this['Text']));
+                });
+            }
+        }
+    </script> *@

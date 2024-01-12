@@ -1,0 +1,50 @@
+﻿@using WebApplication1.Models
+@model IEnumerable<User>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>User Registration Form</h3>
+            </div>
+            <div class="col-sm-6">
+                <ol class="float-sm-right">
+                    <a class="btn btn-primary" id="btnNewProduct" asp-controller="Home" asp-action="CreateUser">Add User</a>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<form>
+    <div class="container-fluid">
+        <form method="post">
+            <table class="table table-striped table-bordered">
+                <thead class="thead bg-transparent">
+                    <tr>
+                        <th class="text-dark">Name</a></th>
+                        <th class="text-dark">Email</a></th>
+                        <th class="text-dark">Phone</th>
+                        <th class="text-dark">Address</th>
+                        <th class="text-dark">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="productList">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Email</td>
+                            <td>@item.Phone</td>
+                            <td>@item.Address</td>
+                            <td>
+                                <a asp-action="EditUser" asp-controller="Home" asp-route-id="@item.UserId"><i style='font-size:20px' class='far'>Edit</i></a> |
+                                <a asp-action="Delete" asp-controller="Home" asp-route-id="@item.UserId"><i style='font-size:20px' class='fas'>Delete</i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+    </div>
+</form>

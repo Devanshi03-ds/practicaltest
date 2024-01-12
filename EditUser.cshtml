@@ -1,0 +1,142 @@
+﻿@model WebApplication1.ViewModel.VMUser
+
+@{
+    ViewData["Title"] = "EditUser";
+}
+
+<h1>EditUser</h1>
+
+<hr />
+<form method="post" asp-controller="Home" asp-action="EditUser">
+    <div class="container-fluid">
+        <div class="card card-default">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="Name">First Name<sup class="" style="font-size: 7px;"></sup></label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input class="text-line col-sm-12" required asp-for="Name" autocomplete="off">
+                            </div>
+                            <input type="hidden" asp-for="UserId" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="Phone">Phone<sup class="" style="font-size: 7px;"></sup></label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input class="text-line col-sm-12" type="text" asp-for="Phone" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="Email">Email<sup class="" style="font-size: 7px;"></sup></label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input class="text-line col-sm-12" type="text" asp-for="Email" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="Address">Address<sup class="" style="font-size: 7px;"></sup></label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input class="text-line col-sm-12" type="text" asp-for="Address" autocomplete="off">
+                            </div>
+                        </div>
+                        @* <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable pt-1" asp-for="StateId">Site</label>
+                            </div>
+                            <div class="form-group col-md-10 ">
+                                <select class="from-group col-md-8" asp-for="StateId">
+                                    @foreach (var item in Model.DDLState)
+                                    {
+                                        <option value="@item.StateName" selected="@(item.StateId == Model.StateId ? "selected" : null)">@item.StateName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div> *@
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="StateId">State</label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <select class="form-control-sm text-line col-md-12" asp-for="StateId">
+                                    @if (Model.StateId == 0 || Model.StateId == null)
+                                    {
+                                        <option value="@null" selected>--Select State--</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@null">--Select State--</option>
+                                    }
+                                    @foreach (var item in Model.DDLState)
+                                    {
+                                        if (Model.StateId == 0 || Model.StateId == null)
+                                        {
+                                            <option value="@item.StateId">@item.StateName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.StateId" selected="@(item.StateId == Model.StateId ? "selected" : null)">@item.StateName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label class="lable" asp-for="CityId">City</label>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <select class="form-control-sm text-line col-md-12" asp-for="CityId">
+                                    @if (Model.CityId == 0 || Model.CityId == null)
+                                    {
+                                        <option value="@null" selected>--Select City--</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@null">--Select City--</option>
+                                    }
+                                    @foreach (var item in Model.DDLCity)
+                                    {
+                                        if (Model.CityId == 0 || Model.CityId == null)
+                                        {
+                                            <option value="@item.CityId">@item.CityName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.CityId" selected="@(item.CityId == Model.CityId ? "selected" : null)">@item.CityName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group container-fluid">
+        <div class="col-md-6">
+            <div class="row">
+                <button class="btn btn-primary  btn-sm col-md-3">
+                    Save
+                </button>
+                &nbsp;&nbsp;
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary btn-sm col-md-3">
+                    Cancel
+                </a>
+                @*<div class="col-1"><a class="btn btn-primary" asp-route-pg="@TempData["pg"]" asp-route-sortExpression="@TempData["sortExpression"]" asp-route-SearchText="@TempData["SearchText"]" asp-route-pageSize="@TempData["pageSize"]" asp-controller="Driver" asp-action="DriverManagement">Cancel</a></div>*@
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
